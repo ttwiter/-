@@ -115,6 +115,33 @@ function renderFinalSignal() {
         </li>
       `;
     }
+async function loadPosts() {
+  const res = await fetch('posts.json');
+  const posts = await res.json();
+  const container = document.getElementById('container');
+  container.innerHTML = posts.map((post, idx) => `
+    <div class="post" data-id="${idx}">
+      <div><b>${post.author}</b> - ${new Date(post.timestamp).toLocaleString()}</div>
+      <div>${post.content}</div>
+      ${post.canDelete ? `<button onclick="deletePost(${idx})">Hapus</button>` : ""}
+    </div>
+  `).join('');
+}
+
+// Untuk hapus, hanya contoh, biasanya perlu autentikasi admin!
+async function deletePost(idx) {
+  let posts = await (await fetch('posts.json')).json();
+  posts.splice(idx, 1);
+  await fetch('posts.json', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify(posts, null, 2)
+  });
+  loadPosts();
+}
+
+window.onload = loadPosts;
+    
   });
   if (!html) html = '<li style="color: #888;">No pairs meet the criteria.</li>';
   return html;
