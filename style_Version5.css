@@ -210,6 +210,14 @@ main {
     border-radius: 22px 22px 0 0;
     padding: 16px 6vw 16px 6vw;
   }
+.post {
+  border: 1px solid #32B7FF;
+  margin: 8px 0;
+  padding: 8px;
+  border-radius: 6px;
+  background: #fafcff;
+}
+  
 }
 
 @media (max-width: 400px) {
