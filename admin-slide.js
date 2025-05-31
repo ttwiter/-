@@ -19,6 +19,28 @@ window.deleteSlide = function(idx) {
   localStorage.setItem("slideList", JSON.stringify(slideList));
 }
 
+document.getElementById('slideForm').onsubmit = async function(e) {
+  e.preventDefault();
+  const author = "admin";
+  const content = document.getElementById('slideDesc').value;
+  let posts = [];
+  try {
+    posts = await (await fetch('posts.json')).json();
+  } catch {}
+  posts.unshift({
+    author,
+    content,
+    timestamp: new Date().toISOString(),
+    canDelete: true
+  });
+  await fetch('posts.json', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify(posts, null, 2)
+  });
+  alert('Postingan berhasil ditambah!');
+};
+
 document.getElementById("slideForm").onsubmit = e => {
   e.preventDefault();
   const title = document.getElementById("slideTitle").value.trim();
